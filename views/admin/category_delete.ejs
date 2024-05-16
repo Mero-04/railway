@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="/assets//css/bootstrap.min.css">
+   <style>
+    .btn-primary {
+        background-color: #171f65!important;
+        border: none;
+    }
+    .btn-danger {
+        background-color: #770b0b!important;
+        border: none;
+    }
+    .btn-success {
+        background-color: #057817!important;
+        border: none;
+    }
+</style>
+</head>
+<body>
+    
+   <div class="container">
+    <div class="card mt-5 align-items-center">
+      <div class="card-header ">
+        Bölüm udalit
+      </div>
+      <div class="card-body">
+        <h4> Siz hakykatdanam su bölümi udalit etmek isleyarsinizmi?</h4>
+        <p class="card-text">Bölüm ady: <%= category.name %></p>
+        <form action="" method="post">
+          <button type="submit" class="btn btn-success">Howa</button>
+          <a href="/admin/category" class="btn btn-danger">Yok</a>
+        </form>
+      </div>
+    </div>
+   </div>
+    
+    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+</html>

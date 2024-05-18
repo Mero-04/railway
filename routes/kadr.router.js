@@ -1,23 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { Blog, Contact, User, Category } = require("../models/model")
+const { Worker, Contact, User, Category } = require("../models/model")
 const multer = require("multer");
 const imageUpload = require("../helpers/image-upload");
 const upload = multer({ dest: 'uploads/' })
 const bcrypt = require("bcrypt")
 const fs = require("fs")
-const isKadr = require("../middlewares/isKadr")
+const isKadr = require("../middlewares/isKadr");
+const { where } = require("sequelize");
 
 
 router.get("/", isKadr, async (req, res) => {
     const categories = await Category.findAll()
     res.render("kadr/home_kadr", {
-        categories:categories
+        categories: categories
     })
 })
 
 
-router.get("/contact",isKadr, async (req, res) => {
+router.get("/contact", isKadr, async (req, res) => {
     const contacts = await Contact.findAll();
     res.render("kadr/contact", {
         contact: contacts
@@ -70,7 +71,7 @@ router.get("/user/:userId", async (req, res) => {
 
 router.post("/user/edit/:userId", imageUpload.upload.single("user_img"), async (req, res) => {
 
-    
+
     let img = req.body.user_img;
     if (req.file) {
         img = req.file.filename;
@@ -135,7 +136,7 @@ router.get("/categories", isKadr, async (req, res) => {
     })
 });
 
-router.get("/categories/:categoryId",isKadr, async (req, res) => {
+router.get("/categories/:categoryId", isKadr, async (req, res) => {
     const users = await User.findAll({
         include: { model: Category },
         where: { categoryId: req.params.categoryId }
@@ -146,5 +147,53 @@ router.get("/categories/:categoryId",isKadr, async (req, res) => {
 });
 
 
+
+router.get("/profil", isKadr, async (req, res) => {
+    const worker = await Worker.findOne({
+        where: {
+            id: req.session.userId
+        }
+    })
+
+    res.render("kadr/profil", {
+        user: worker
+    })
+})
+
+
+router.post("/profil/edit", isKadr, imageUpload.upload.single("worker_img"), async (req, res) => {
+    let img = req.body.worker_img;
+    if (req.file) {
+        img = req.file.filename;
+
+        fs.unlink("./uploads/profil/" + req.body.img, err => {
+            console.log(err);
+        })
+    }
+    const user = await Worker.findOne({
+        where: {
+            id: req.session.userId
+        }
+    });
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    if (user) {
+        user.email = req.body.email,
+        user.password = hashedPassword,
+        user.worker_img = img,
+        user.save()
+
+        res.redirect("/kadr/profil")
+    }
+})
+
+router.get("/profil/edit", isKadr, async (req, res) => {
+    const user = await Worker.findOne({
+        where: { id: req.session.userId }
+    })
+    res.render("kadr/profil-edit", {
+        user: user
+    })
+})
 
 module.exports = router;

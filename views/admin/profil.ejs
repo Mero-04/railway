@@ -32,16 +32,16 @@
       <div class="card-header w-100"> </div>
       <div class="card-body p-5 w-50 shadow-lg m-5">
         <div class="d-flex justify-content-end">
-          <a href="/kadr/profil/edit" class="btn btn-primary"><i class="fas fa-pen"></i></a>
+          <a href="/admin/profil/edit" class="btn btn-primary"><i class="fas fa-pen"></i></a>
         </div>
-        <% if (user.worker_img=="Surat yok" ) { %>
+        <% if (user.admin_img=="Surat yok" ) { %>
           <div class="d-flex justify-content-center align-items-center">
             <div> <img src="/assets/img/avatar.jpg" class="img-fluid mt-5" width="150" height="150" alt="">
             </div>
           </div>
           <% } else { %>
             <div class="d-flex justify-content-center align-items-center">
-              <div> <img src="/uploads/profil/<%= user.worker_img %>" class="img-fluid mt-5 rounded-circle" width="200" height="200"
+              <div> <img src="/uploads/profil/<%= user.admin_img %>" class="img-fluid mt-5 rounded-circle" width="200" height="200"
                   alt="">
               </div>
             </div>
@@ -53,7 +53,7 @@
                     <%= user.name %>
                   </div>
                 </div>
-                <a href="/kadr/users" class="btn btn-danger px-5 py-2">Yza çyk</a>
+                <a href="/admin/users" class="btn btn-danger px-5 py-2">Yza çyk</a>
               </div>
 
 

@@ -91,7 +91,7 @@ const Admin = sequelize.define("admin", {
         primaryKey: true,
         allowNull: false
     },
-    email: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -103,6 +103,10 @@ const Admin = sequelize.define("admin", {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "ADMIN"
+    },
+    admin_img: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 });
 
@@ -113,7 +117,7 @@ const Worker = sequelize.define("worker", {
         primaryKey: true,
         allowNull: false
     },
-    email: {
+    name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -126,7 +130,7 @@ const Worker = sequelize.define("worker", {
         allowNull: false,
         defaultValue: "WORKER"
     },
-   worker_img: {
+    worker_img: {
         type: DataTypes.STRING,
         allowNull: true
     }
@@ -146,8 +150,8 @@ const Category = sequelize.define("category", {
     }
 });
 
-Admin.findOrCreate({ where: { email: "admin@gmail.com", password: "$2b$10$ppLSj03K./oeMqaDKYEpTehMP5/Nxp5JzmppDXbygn/ReZMhwBe5W", role: "ADMIN" } })
-Worker.findOrCreate({ where: { email: "kadr@gmail.com", password: "$2b$10$ppLSj03K./oeMqaDKYEpTehMP5/Nxp5JzmppDXbygn/ReZMhwBe5W", role: "WORKER", worker_img: "Surat yok" } })
+Admin.findOrCreate({ where: { name: "admin", password: "$2b$10$ppLSj03K./oeMqaDKYEpTehMP5/Nxp5JzmppDXbygn/ReZMhwBe5W", role: "ADMIN", admin_img: "Surat yok" } })
+Worker.findOrCreate({ where: { name: "kadr", password: "$2b$10$ppLSj03K./oeMqaDKYEpTehMP5/Nxp5JzmppDXbygn/ReZMhwBe5W", role: "WORKER", worker_img: "Surat yok" } })
 
 Category.hasMany(User, { onDelete: "cascade", onUpdate: "cascade" })
 User.belongsTo(Category)

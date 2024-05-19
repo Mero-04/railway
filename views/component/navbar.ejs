@@ -8,10 +8,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto">
-            <a href="/" class="nav-item nav-link active">Baş sahypa</a>
+            <a href="/" class="nav-item nav-link  <% if (page == "home") { %> active <% } %>">Baş sahypa</a>
             <a href="/kadr/users" class="nav-item nav-link">Işgärler</a>
            
-            <a href="/contact" class="nav-item nav-link">Habarlaşmak</a>
+            <a href="/contact" class="nav-item nav-link <% if (page == "contact") { %> active <% } %>">Habarlaşmak</a>
         </div>
         <butaton type="button" class="btn text-white p-0 d-none d-lg-block" data-bs-toggle="modal"
             data-bs-target="#searchModal"><i class="fa fa-search"></i></butaton>

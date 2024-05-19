@@ -7,13 +7,15 @@ const upload = multer({ dest: 'uploads/' })
 const bcrypt = require("bcrypt")
 const fs = require("fs")
 const isKadr = require("../middlewares/isKadr");
-const { where } = require("sequelize");
 
 
 router.get("/", isKadr, async (req, res) => {
     const categories = await Category.findAll()
     res.render("kadr/home_kadr", {
-        categories: categories
+        categories: categories,
+        img: req.session.img,
+        username: req.session.email,
+        page: "home"
     })
 })
 
@@ -21,7 +23,10 @@ router.get("/", isKadr, async (req, res) => {
 router.get("/contact", isKadr, async (req, res) => {
     const contacts = await Contact.findAll();
     res.render("kadr/contact", {
-        contact: contacts
+        contact: contacts,
+        img: req.session.img,
+        username: req.session.email,
+        page : "contact"
     })
 });
 
@@ -31,7 +36,10 @@ router.get("/users", isKadr, async (req, res) => {
         include: { model: Category }
     });
     res.render("kadr/users", {
-        bloglar: blogs
+        bloglar: blogs,
+        img: req.session.img,
+        username: req.session.email,
+        page: "users"
     })
 })
 
@@ -51,7 +59,7 @@ router.post("/user-add", isKadr, imageUpload.upload.single("user_img"), async (r
             birth: req.body.birth,
             duty: req.body.duty,
             address: req.body.address,
-            tel_nom: req.body.surname,
+            tel_nom: req.body.tel_nom,
             user_img: req.file.filename,
             categoryId: req.body.categoryId
         })
@@ -88,7 +96,7 @@ router.post("/user/edit/:userId", imageUpload.upload.single("user_img"), async (
             user.birth = req.body.birth,
             user.duty = req.body.duty,
             user.address = req.body.address,
-            user.tel_nom = req.body.surname,
+            user.tel_nom = req.body.tel_nom,
             user.user_img = img,
             user.categoryId = req.body.categoryId
 
@@ -120,6 +128,7 @@ router.get("/user/delete/:userId", isKadr, async (req, res) => {
 router.post("/user/delete/:userId", isKadr, async (req, res) => {
     const user = await User.findByPk(req.params.userId);
     if (user) {
+        fs.unlink("./public/uploads/user/" + user.user_img, err => { })
         user.destroy();
         return res.redirect("/kadr/users")
     } else {
@@ -132,7 +141,10 @@ router.post("/user/delete/:userId", isKadr, async (req, res) => {
 router.get("/categories", isKadr, async (req, res) => {
     const category = await Category.findAll();
     res.render("kadr/category", {
-        categories: category
+        categories: category,
+        img: req.session.img,
+        username: req.session.email,
+        page: "category"
     })
 });
 
@@ -142,7 +154,10 @@ router.get("/categories/:categoryId", isKadr, async (req, res) => {
         where: { categoryId: req.params.categoryId }
     });
     res.render("kadr/users", {
-        bloglar: users
+        bloglar: users,
+        img: req.session.img,
+        username: req.session.email,
+        page: "category"
     })
 });
 
@@ -166,7 +181,7 @@ router.post("/profil/edit", isKadr, imageUpload.upload.single("worker_img"), asy
     if (req.file) {
         img = req.file.filename;
 
-        fs.unlink("./uploads/profil/" + req.body.img, err => {
+        fs.unlink("./public/uploads/profil/" + req.body.img, err => {
             console.log(err);
         })
     }
@@ -178,10 +193,10 @@ router.post("/profil/edit", isKadr, imageUpload.upload.single("worker_img"), asy
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     if (user) {
-        user.email = req.body.email,
-        user.password = hashedPassword,
-        user.worker_img = img,
-        user.save()
+        user.name = req.body.name,
+            user.password = hashedPassword,
+            user.worker_img = img,
+            user.save()
 
         res.redirect("/kadr/profil")
     }

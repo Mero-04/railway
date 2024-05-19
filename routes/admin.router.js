@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Blog, Contact, User, Category } = require("../models/model")
+const { Blog, Contact, User, Category, Admin } = require("../models/model")
 const multer = require("multer");
 const imageUpload = require("../helpers/image-upload");
 const upload = multer({ dest: 'uploads/' })
@@ -9,10 +9,13 @@ const fs = require("fs")
 const isAdmin = require("../middlewares/isAdmin")
 
 
-router.get("/", isAdmin,async (req, res) => {
+router.get("/", isAdmin, async (req, res) => {
    const categories = await Category.findAll();
     res.render("admin/home_admin",{
-        categories:categories
+        categories:categories,
+        img: req.session.img,
+        username: req.session.email,
+        page: "home"
     })
 })
 
@@ -22,14 +25,20 @@ router.get("/users/:categoryId",isAdmin, async (req, res) => {
         where: { categoryId: req.params.categoryId }
     });
     res.render("admin/users", {
-        bloglar: users
+        bloglar: users,
+        img: req.session.img,
+        username: req.session.email,
+        page: "users"
     })
 });
 
 router.get("/contact", async (req, res) => {
     const contacts = await Contact.findAll();
     res.render("admin/contact", {
-        contact: contacts
+        contact: contacts,
+        page: "contact",
+        img: req.session.img,
+        username: req.session.email,
     })
 });
 
@@ -63,7 +72,10 @@ router.post("/contact/delete/:contactId", async (req, res) => {
 router.get("/users", async (req, res) => {
     const blogs = await User.findAll();
     res.render("admin/users", {
-        bloglar: blogs
+        bloglar: blogs,
+        page: "users",
+        img: req.session.img,
+        username: req.session.email,
     })
 })
 
@@ -108,6 +120,7 @@ router.get("/user/delete/:userId", async (req, res) => {
 router.post("/user/delete/:userId", async (req, res) => {
     const user = await User.findByPk(req.params.userId);
     if (user) {
+        fs.unlink("./public/uploads/user/" + user.user_img, err => { })
         user.destroy();
         return res.redirect("/admin/users")
     } else {
@@ -121,7 +134,10 @@ router.get("/category", async (req, res) => {
     const category = await Category.findAll();
     res.render("admin/categories", {
         category: category,
-        action: req.query.action
+        action: req.query.action,
+        page: "category",
+        img: req.session.img,
+        username: req.session.email,
     })
 });
 
@@ -187,5 +203,55 @@ router.post("/category/delete/:categoryId", async (req, res) => {
     }
 })
 
+
+
+router.get("/profil", isAdmin, async (req, res) => {
+    const worker = await Admin.findOne({
+        where: {
+            id: req.session.userId
+        }
+    })
+
+    res.render("admin/profil", {
+        user: worker
+    })
+})
+
+
+router.post("/profil/edit", isAdmin, imageUpload.upload.single("admin_img"), async (req, res) => {
+    let img = req.body.admin_img;
+    if (req.file) {
+        img = req.file.filename;
+
+        fs.unlink("./public/uploads/profil/" + req.body.img, err => {
+            console.log(err);
+        })
+    }
+    const user = await Admin.findOne({
+        where: {
+            id: req.session.userId
+        }
+    });
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+    if (user) {
+        user.name = req.body.name,
+            user.password = hashedPassword,
+            user.admin_img = img,
+            user.save()
+
+        res.redirect("/admin/profil")
+    }
+})
+
+router.get("/profil/edit", isAdmin, async (req, res) => {
+    const user = await Admin.findOne({
+        where: { id: req.session.userId }
+    })
+    res.render("admin/profil-edit", {
+        user: user
+    })
+})
 
 module.exports = router;

@@ -12,6 +12,9 @@ const storage = multer.diskStorage({
         else if (file.fieldname === "worker_img") {
             cb(null, './public/uploads/profil/');
         }
+        else if (file.fieldname === "admin_img") {
+            cb(null, './public/uploads/profil/');
+        }
      },
         
     filename: function(req, file, cb){

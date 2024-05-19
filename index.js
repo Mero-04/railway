@@ -7,12 +7,16 @@ const cookiee = require("cookie-parser")
 const session = require("express-session")
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sequelize = require("./data/db")
+const locals = require("./middlewares/locals");
+
 
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(cookiee());
+
+
 
 app.use(session({
     secret: "test",
@@ -38,7 +42,6 @@ app.use("/", HomeRouter)
 app.use("/admin", AdminRouter)
 app.use("/kadr", KadrRouter)
 app.use("/auth", AuthRouter)
-
 
 
 app.listen(PORT, () => {

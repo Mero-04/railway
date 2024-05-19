@@ -1,26 +1,30 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark " style="background-color:  #0f154d;" id="sidenavAccordion">
     <div class="sb-sidenav-menu ">
         <div class="nav">
-            <div class="sb-sidenav-menu-heading d-flex justify-content-between align-items-center" >
-                <img src="/assets/img/avatar.jpg" width="75" height="75" alt="" class="img-fluid rounded-circle">
-                <h5>username</h5>
+            <div class="sb-sidenav-menu-heading d-flex justify-content-between align-items-center text-white w-75">
+                <% if (img=="Surat yok" ) { %>
+                    <img src="/assets/img/avatar.jpg" width="60" height="60" alt="" class="img-fluid rounded-circle">
+                <% } else { %>
+                    <img src="/uploads/profil/<%= img %>" width="60" height="60" alt="" class="img-fluid rounded-circle">
+                <% } %>
+            <p><%= username %></p>
             </div>
 
             <div class="sb-sidenav-menu-heading ">Esasy</div>
-            <a class="nav-link text-white" href="/kadr">
-                <div class="sb-nav-link-icon text-white"><i class="fas fa-bars"></i></div>
+            <a class="nav-link text-white <% if (page == "home") { %> text-muted <% } %> " href="/kadr">
+                <div class="sb-nav-link-icon text-white "><i class="fas fa-bars"></i></div>
                 Baş sahypa
             </a>
             <div class="sb-sidenav-menu-heading">Interfeys</div>
-            <a class="nav-link text-white" href="/kadr/categories">
+            <a class="nav-link text-white <% if (page == "category") { %> text-muted <% } %> " href="/kadr/categories">
                 <div class="sb-nav-link-icon text-white"><i class="fas fa-file-alt "></i></div>
                 Bölümler
             </a>
-            <a class="nav-link text-white" href="/kadr/users">
+            <a class="nav-link text-white <% if (page == "users") { %> text-muted <% } %>"  href="/kadr/users">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-alt text-white"></i></div>
                 Işgärler
             </a>
-            <a class="nav-link text-white" href="/kadr/contact">
+            <a class="nav-link text-white <% if (page == "contact") { %> text-muted <% } %> " href="/kadr/contact">
                 <div class="sb-nav-link-icon"><i class="fas fa-phone-alt text-white"></i></div>
                 Habarlaşmak
             </a>
@@ -28,6 +32,6 @@
     </div>
     <div class="sb-sidenav-footer">
         <div class="small">KadrAdmin: kadr@gmail.com</div>
-        
+
     </div>
 </nav>

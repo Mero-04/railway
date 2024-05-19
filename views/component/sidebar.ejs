@@ -1,21 +1,29 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark" style="background-color:  #0f154d;" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
+            <div class="sb-sidenav-menu-heading d-flex justify-content-between align-items-center text-white w-75">
+                <% if (img=="Surat yok" ) { %>
+                    <img src="/assets/img/avatar.jpg" width="60" height="60" alt="" class="img-fluid rounded-circle">
+                <% } else { %>
+                    <img src="/uploads/profil/<%= img %>" width="60" height="60" alt="" class="img-fluid rounded-circle">
+                <% } %>
+            <p><%= username %></p>
+            </div>
             <div class="sb-sidenav-menu-heading">Esasy</div>
-            <a class="nav-link text-white" href="/admin">
+            <a class="nav-link text-white <% if (page == "home") { %> text-muted <% } %>" href="/admin">
                 <div class="sb-nav-link-icon text-white"><i class="fas fa-bars"></i></div>
                 Baş sahypa
             </a>
             <div class="sb-sidenav-menu-heading">Interfeys</div>
-            <a class="nav-link text-white" href="/admin/category">
+            <a class="nav-link text-white <% if (page == "category") { %> text-muted <% } %>" href="/admin/category">
                 <div class="sb-nav-link-icon text-white"><i class="fas fa-file-alt"></i></div>
                 Bölümler
             </a>
-            <a class="nav-link text-white" href="/admin/users">
+            <a class="nav-link text-white <% if (page == "users") { %> text-muted <% } %>" href="/admin/users">
                 <div class="sb-nav-link-icon text-white"><i class="fas fa-file-alt"></i></div>
                 Işgärler
             </a>
-            <a class="nav-link text-white" href="/admin/contact">
+            <a class="nav-link text-white <% if (page == "contact") { %> text-muted <% } %>" href="/admin/contact">
                 <div class="sb-nav-link-icon text-white"><i class="fas fa-phone-alt"></i></div>
                 Habarlaşmak
             </a>

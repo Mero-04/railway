@@ -3,6 +3,7 @@ const router = express.Router();
 const { Worker, Contact, User, Category } = require("../models/model")
 const multer = require("multer");
 const imageUpload = require("../helpers/image-upload");
+const multiUpload = require("../helpers/multi-upload")
 const upload = multer({ dest: 'uploads/' })
 const bcrypt = require("bcrypt")
 const fs = require("fs")
@@ -50,7 +51,7 @@ router.get("/user-add", isKadr, async (req, res) => {
     })
 })
 
-router.post("/user-add", isKadr, imageUpload.upload.single("user_img"), async (req, res) => {
+router.post("/user-add", isKadr, multiUpload.upload, async (req, res) => {
     try {
         const user = await User.create({
             name: req.body.name,
@@ -60,7 +61,8 @@ router.post("/user-add", isKadr, imageUpload.upload.single("user_img"), async (r
             duty: req.body.duty,
             address: req.body.address,
             tel_nom: req.body.tel_nom,
-            user_img: req.file.filename,
+            user_img: req.files.user_img[0].filename,
+            arka_file: req.files.arka_file[0].filename,
             categoryId: req.body.categoryId
         })
         res.redirect("/kadr/users");
@@ -77,17 +79,34 @@ router.get("/user/:userId", async (req, res) => {
     })
 })
 
-router.post("/user/edit/:userId", imageUpload.upload.single("user_img"), async (req, res) => {
-
-
+router.post("/user/edit/:userId", multiUpload.upload, async (req, res) => {
     let img = req.body.user_img;
-    if (req.file) {
-        img = req.file.filename;
+    let file = req.body.arka_file;
+    if (req.files.user_img && req.files.arka_file) {
+        img = req.files.user_img[0].filename,
+        file = req.files.arka_file[0].filename,
 
-        fs.unlink("/uploads/user/" + req.body.img, err => {
+        fs.unlink("./public/uploads/user/" + req.body.user_img, err => {
+            console.log(err);
+        })
+        fs.unlink("./public/uploads/3arka/" + req.body.arka_file, err => {
+            console.log(err);
+        })
+    } else if (req.files.user_img && !req.files.arka_file) {
+
+        img = req.files.user_img[0].filename,
+
+        fs.unlink("./public/uploads/user/" + req.body.user_img, err => {
+            console.log(err);
+        })
+    }   else if (!req.files.user_img && req.files.arka_file) {
+        file = req.files.arka_file[0].filename,
+
+        fs.unlink("./public/uploads/3arka/" + req.body.arka_file, err => {
             console.log(err);
         })
     }
+
     const user = await User.findByPk(req.params.userId);
     if (user) {
         user.name = req.body.name,
@@ -98,6 +117,7 @@ router.post("/user/edit/:userId", imageUpload.upload.single("user_img"), async (
             user.address = req.body.address,
             user.tel_nom = req.body.tel_nom,
             user.user_img = img,
+            user.arka_file = file,
             user.categoryId = req.body.categoryId
 
         user.save()
@@ -181,7 +201,7 @@ router.post("/profil/edit", isKadr, imageUpload.upload.single("worker_img"), asy
     if (req.file) {
         img = req.file.filename;
 
-        fs.unlink("./public/uploads/profil/" + req.body.img, err => {
+        fs.unlink("./public/uploads/profil/" + req.body.worker_img, err => {
             console.log(err);
         })
     }

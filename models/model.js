@@ -81,6 +81,10 @@ const User = sequelize.define("user", {
     user_img: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    arka_file: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 });
 

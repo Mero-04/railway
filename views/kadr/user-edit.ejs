@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Blog Add</title>
+    <title>Edit</title>
     <link href="/admin/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
@@ -42,6 +42,7 @@
                                 <div class="card-body">
                                     <form action="" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="user_img" value="<%= user.user_img %>">
+                                        <input type="hidden" name="arka_file" value="<%= user.arka_file %>">
                                         <div class="form-floating mb-3">
                                             <select name="categoryId" id="categoryId" class="form-control">
                                                 <option value="-1" selected>Saýlamak</option>
@@ -57,40 +58,40 @@
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="surname"
-                                                placeholder="Add title" value="<%= user.surname %>" />
+                                                placeholder="Add title" value="<%= user.surname %>" required />
                                             <label for="input">Familýasy: </label>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="name"
-                                                placeholder="Add title" value="<%= user.name %>" />
+                                                placeholder="Add title" value="<%= user.name %>" required/>
                                             <label for="input">Ady: </label>
                                         </div>
 
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="ata_name"
-                                                placeholder="Add title" value="<%= user.ata_name %>" />
+                                                placeholder="Add title" value="<%= user.ata_name %>"required />
                                             <label for="input">Atasynyň ady: </label>
                                         </div>
 
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="date" name="birth"
-                                                placeholder="Add title" value="<%= user.birth %>" />
+                                                placeholder="Add title" value="<%= user.birth %>" required/>
                                             <label for="input">Doglan senesi: </label>
                                         </div>
 
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="duty"
-                                                placeholder="Add title" value="<%= user.duty %>" />
+                                                placeholder="Add title" value="<%= user.duty %>" required/>
                                             <label for="input">Wezipesi: </label>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="address"
-                                                placeholder="Add title" value="<%= user.address %>" />
+                                                placeholder="Add title" value="<%= user.address %>" required/>
                                             <label for="input">Salgysy: </label>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="input" type="text" name="tel_nom"
-                                                placeholder="Add title" value="<%= user.tel_nom %>" />
+                                                placeholder="Add title" value="<%= user.tel_nom %>" required/>
                                             <label for="input">Telefon belgisi: </label>
                                         </div>
 
@@ -98,6 +99,11 @@
                                             <input class="form-control" id="input" type="file" name="user_img"
                                                 placeholder="add image" />
                                             <label for="input">Suraty: </label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="input" type="file" name="arka_file"
+                                                placeholder="add image" />
+                                            <label for="input">3 arkasy: </label>
                                         </div>
                                         <div class="d-flex justify-content-between" style="padding: 0px 75px;">
                                             <button type="submit" class="btn btn-success">Ýatda saklamak</button>
